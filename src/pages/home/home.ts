@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 declare var google;
 @Component({
@@ -10,15 +10,71 @@ declare var google;
 })
 export class HomePage {
  
+ public photos: any;
+ public base64Image: string;
+
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   latitud:any;
   longitud:any;
  
-  constructor(public navCtrl: NavController, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public geolocation: Geolocation, private camera: Camera, private alertCtrl: AlertController) {
  
   }
- 
+
+  ngOnInit(){
+  	this.photos= [];
+  }
+
+
+  takePhoto(){
+  	const options: CameraOptions = {
+  		quality: 50,
+  		destinationType: this.camera.DestinationType.DATA_URL,
+  		encodingType: this.camera.EncodingType.JPEG,
+  		mediaType: this.camera.MediaType.PICTURE
+  	}
+
+  	this.camera.getPicture(options).then((imageData) => {
+ // imageData is either a base64 encoded string or a file URI
+ // If it's base64:
+this.base64Image = 'data:image/jpeg;base64,' + imageData;
+this.photos.push(this.base64Image);
+this.photos.reverse();
+ }, (err) => {
+ // Handle error
+ });
+
+
+  }
+
+ deletePhoto(index){
+
+ 	let confirm = this.alertCtrl.create({
+      title: 'Seguro que quierees borrar la foto',
+      message: '',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            
+          }
+        },
+        {
+          text: 'Si',
+          handler: () => {
+          
+
+            this.photos.splice(index,1);
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+//
+ }
+
   ionViewDidLoad(){
     this.loadMap();
   }
