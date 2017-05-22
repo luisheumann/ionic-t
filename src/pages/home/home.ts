@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 declare var google;
 @Component({
@@ -9,7 +10,7 @@ declare var google;
   templateUrl: 'home.html'
 })
 export class HomePage {
- 
+ private todo : FormGroup;
  public photos: any;
  public base64Image: string;
 
@@ -18,9 +19,19 @@ export class HomePage {
   latitud:any;
   longitud:any;
  
-  constructor(public navCtrl: NavController, public geolocation: Geolocation, private camera: Camera, private alertCtrl: AlertController) {
- 
+  constructor(private formBuilder: FormBuilder, public navCtrl: NavController, public geolocation: Geolocation, private camera: Camera, private alertCtrl: AlertController) {
+    this.todo = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: [''],
+      fotitos: [''],
+    });
   }
+
+
+  logForm(){
+    console.log(this.todo.value)
+  }
+
 
   ngOnInit(){
   	this.photos= [];
@@ -55,7 +66,7 @@ this.photos.reverse();
       message: '',
       buttons: [
         {
-          text: 'Disagree',
+          text: 'No',
           handler: () => {
             
           }
@@ -77,6 +88,14 @@ this.photos.reverse();
 
   ionViewDidLoad(){
     this.loadMap();
+  }
+
+  addMarker(){
+
+  	console.log(this.photos);
+
+  
+
   }
  
   loadMap(){
@@ -102,6 +121,8 @@ this.photos.reverse();
     });
  
   }
+
+
 
 
  

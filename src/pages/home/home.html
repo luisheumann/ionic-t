@@ -14,20 +14,36 @@
 
 
  <button ion-button full (click)="takePhoto()">
- <ion-icon name="camera"></ion-icon> Tomar Foto</button>
+   <ion-icon name="camera"></ion-icon> Tomar Foto</button>
+
 
 <ion-grid>
-  <ion-row>
-    <ion-col col-6 *ngFor="let photo of photos; let id = index">
+    <ion-row>
+      <ion-col col-6 *ngFor="let photo of photos; let id = index">
        <ion-card class="block">
-       <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto(id)"></ion-icon>
-   <img [src]="photo" *ngIf="photo"/>
- </ion-card>
-    </ion-col>
+         <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto(id)"></ion-icon>
+         <img  [src]="photo" *ngIf="photo"/>
+       </ion-card>
+     </ion-col>
+   </ion-row>
+ </ion-grid>
 
 
-  </ion-row>
 
-</ion-grid>
+ <form [formGroup]="todo" (ngSubmit)="logForm()">
+  <ion-item>
+    <ion-label>Todo</ion-label>
+    <ion-input type="text" formControlName="title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description</ion-label>
+        <ion-textarea formControlName="description"></ion-textarea>
+      </ion-item>
+
+<ion-input type="text" formControlName="fotitos">{{photos}}</ion-input>
+
+
+      <button ion-button type="submit" [disabled]="!todo.valid">Submit</button>
+    </form>
 
 </ion-content>
