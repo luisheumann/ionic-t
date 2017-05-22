@@ -3,6 +3,9 @@ import { NavController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { GeneralService } from '../../services/general.service';
+
+import { Http } from '@angular/http';
 
 declare var google;
 @Component({
@@ -13,18 +16,37 @@ export class HomePage {
  private todo : FormGroup;
  public photos: any;
  public base64Image: string;
-
+users: any = {};
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   latitud:any;
   longitud:any;
- 
-  constructor(private formBuilder: FormBuilder, public navCtrl: NavController, public geolocation: Geolocation, private camera: Camera, private alertCtrl: AlertController) {
+  weight: any = [];
+ data:any;
+  constructor(public http: Http,private generalService: GeneralService, private formBuilder: FormBuilder, public navCtrl: NavController, public geolocation: Geolocation, private camera: Camera, private alertCtrl: AlertController) {
     this.todo = this.formBuilder.group({
       title: ['', Validators.required],
       description: [''],
       fotitos: [''],
     });
+
+
+
+this.generalService.users()
+    .subscribe(data => {
+        this.data = data;
+        console.log(this.data);
+    }, error => {
+        // do something with error
+    });
+
+
+/*
+     generalService.users().then(data => {
+      this.weight = data;
+    });
+*/
+
   }
 
 

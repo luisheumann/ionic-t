@@ -1,16 +1,51 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
-import { API_URL } from '../constants/vethub.constant';
+import { Http } from '@angular/http';
+
 import 'rxjs/add/operator/toPromise';
 import * as JsonApiDataStore from "jsonapi-datastore";
 
 
 @Injectable()
-export class PetService {
+export class GeneralService {
 
-	constructor(private http: Http, private userService: UserService, private tokenService: TokenService) {
+	constructor(private http: Http) {
 		
 	}
+
+
+/*
+users() : Promise<any> {
+	
+		return this.http
+			.post('http://homestead.app/entrar', "hola")
+			.toPromise()
+			.then(res => {
+				let json = res.json();
+				let store = new JsonApiDataStore.JsonApiDataStore();
+				store.sync(json);
+				let data = store.findAll('users');
+				return data;
+			})
+	}
+
+*/
+
+
+
+	users() {
+        var link = 'http://homestead.app/entrar';
+        var data = JSON.stringify({email: "luisheumann@gmail.com", password: "techmedia"});
+        
+        this.http.post(link, data)
+        .subscribe(data => {
+        //	this.data.response = data.email;
+        }, error => {
+            console.log("Oooops!");
+        });
+  }
+
+
+
 /*
 	pets() : Promise<any> {
 		
